@@ -32,29 +32,7 @@ Real-time	Socket.io
 Authentication	JWT / OAuth 2.0
 Deployment	Netlify (Frontend) / Vercel / AWS
 
-📦 Installation
-Prerequisites
-•Node.js 18+
-•npm or yarn
-•Git
-Clone the Repository
-git clone https://github.com/yourusername/hyperquizes.git
-cd hyperquizes
-Install Dependencies
-npm install
-# or
-yarn install
-Environment Setup
-Create a .env file in the root directory:
-DATABASE_URL=postgresql://user:password@localhost:5432/hyperquizes
-JWT_SECRET=your_jwt_secret_key
-NEXT_PUBLIC_API_URL=http://localhost:3000
-SOCKET_IO_URL=http://localhost:3001
-Run Development Server
-npm run dev
-# or
-yarn dev
-The application will be available at http://localhost:3000.
+
 
 🎯 Usage
 Creating a Quiz
@@ -75,23 +53,12 @@ Taking a Quiz
 3.Answer questions within the time limit
 4.View your score and ranking immediately
 
-🏗️ Project Structure
-hyperquizes/
-├── apps/
-│   ├── web/                 # Next.js frontend application
-│   └── api/                 # Express backend API
-├── packages/
-│   ├── ui/                  # Shared UI component library
-│   ├── config/              # Shared configuration (ESLint, Tailwind)
-│   └── types/               # Shared TypeScript types
-├── docs/                    # Documentation
-├── scripts/                 # Build and deployment scripts
-└── README.md
+
 
 🤝 Contributing
 We welcome contributions from the community! Here’s how to get started:
 1.Fork the repository
-2.Clone your fork: git clone https://github.com/yourusername/hyperquizes.git
+2.Clone your fork: git clone https://github.com/ayoolaowoilu/hyperquizes.git
 3.Create a branch: git checkout -b feature/amazing-feature
 4.Make your changes and commit: git commit -m 'Add amazing feature'
 5.Push to your branch: git push origin feature/amazing-feature
