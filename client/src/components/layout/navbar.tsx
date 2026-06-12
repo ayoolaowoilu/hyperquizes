@@ -44,7 +44,6 @@ export default function Navbar({ onThemeChange }:props){
 
 
     useEffect(() => {
-      // Detect scroll for nav styling
       const handleScroll = () => {
         setScrolled(window.scrollY > 20)
       }
@@ -72,7 +71,7 @@ export default function Navbar({ onThemeChange }:props){
 
 
 
-    return   <div>
+    return  <div>
        <header className={`fixed top-0 left-0 right-0 z-100 transition-all duration-500 border-b ${scrolled ? (isDark ? 'bg-black/95 shadow-2xl shadow-orange-500/10 border-orange-500/30' : 'bg-white/95 shadow-lg shadow-orange-500/10 border-orange-200') : (isDark ? 'bg-black/80 border-orange-500/20' : 'bg-white/80 border-orange-100')} backdrop-blur-xl`}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
@@ -93,7 +92,7 @@ export default function Navbar({ onThemeChange }:props){
               <nav className="flex items-center gap-6">
                 {[
                   { name: 'Home', href: '/home' , active:false },
-                  { name: 'Join Quiz', href: '/join-quiz' },
+             
                   { name: 'Create Quiz', href: '/create-quiz' },
                   { name: 'Stats', href: '/stats' },{name:"Explore",href:"/explore"}
                 ].map((item) => (
@@ -232,9 +231,9 @@ export default function Navbar({ onThemeChange }:props){
               <nav className="flex flex-col gap-2">
                 {[
                 { name: 'Home', href: '/home' , active:false },
-                  { name: 'Join Quiz', href: '/join-quiz' },
+            
                   { name: 'Create Quiz', href: '/create-quiz' },
-                  { name: 'Stats', href: '/stats' }
+                  { name: 'Stats', href: '/stats' },{name:"Explore" , href:"/explore"}
                 ].map((item) => (
                   <a
                     key={item.name}

@@ -317,7 +317,7 @@ export default function JoinQuiz() {
     }
   }, [quiz_id]);
 
-  // Timer effect
+  
   useEffect(() => {
     let interval:any;
     if (stage === 2 && quiz?.isTimed && timeRemaining > 0) {
@@ -472,7 +472,7 @@ export default function JoinQuiz() {
     );
   }
 
-  // STAGE 4: Quiz Restricted (One-time already taken - found in viewed)
+  
   if (stage === 4) {
     return (
       <div className={`min-h-screen relative flex items-center justify-center p-4 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
@@ -551,13 +551,13 @@ export default function JoinQuiz() {
     );
   }
 
-  // STAGE 1: Welcome/Explore (No ID)
+  
   if (!quiz_id) {
     return (
       <div className={`min-h-screen relative ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
         <AnimatedBackground isDark={isDark} />
          <SEO
-        title={quiz.quiz_name || "Join This Quiz"} 
+        title={quiz?.quiz_name || "Join This Quiz"} 
         description="Try this quiz" 
       />
        
@@ -581,8 +581,8 @@ export default function JoinQuiz() {
             <div className="hidden lg:flex items-center gap-8">
               <nav className="flex items-center gap-6">
                 {[
-                  { name: 'Home', href: '/home',  },
-                  { name: 'Join Quiz', href: '/join-quiz' , active : false},
+                  { name: 'Home', href: '/home', active:false },
+                
                   { name: 'Create Quiz', href: '/create-quiz' },
                   { name: 'Stats', href: '/stats' },
                   {name:"Explore" , href:"/explore"}
@@ -709,9 +709,9 @@ export default function JoinQuiz() {
               <nav className="flex flex-col gap-2">
                 {[
                   { name: 'Home', href: '/home', active: false },
-                  { name: 'Join Quiz', href: '/join-quiz' },
+               
                   { name: 'Create Quiz', href: '/create-quiz' },
-                  { name: 'Stats', href: '/stats' }
+                  { name: 'Stats', href: '/stats' }, {name:"Explore" , href:"/explore"}
                 ].map((item) => (
                   <a
                     key={item.name}

@@ -30,7 +30,7 @@ export default function Footer({ isDark }:foot){
                 <a
                   key={link}
                   href={`/${link.toLowerCase()}`}
-                  className={`transition-colors duration-300 ${isDark ? 'text-gray-400 hover:text-orange-400' : 'text-slate-600 hover:text-orange-600'} ${link === 'About' ? 'font-semibold text-orange-500' : ''}`}
+                  className={`transition-colors duration-300 ${isDark ? 'text-gray-400 hover:text-orange-400' : 'text-slate-600 hover:text-orange-600'} ${'font-semibold text-orange-500'}`}
                 >
                   {link}
                 </a>
