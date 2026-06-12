@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Link2, ArrowRight, Users, Zap, Sparkles, BarChart3, Globe, Plus, Calendar, Flame, Star, ChevronRight, Clock, TrendingUp, Clock3, Book } from "lucide-react"
+import { Link2, ArrowRight,  Zap, Sparkles, BarChart3, Globe, Plus, Calendar, Flame, Star, ChevronRight, Clock, Clock3, Book } from "lucide-react"
 import SEO from "./seo"
 import Navbar from "./layout/navbar"
 import Footer from "./layout/footer"
@@ -14,20 +14,18 @@ export default function Home() {
     return false;
   });
 
-  const [scrolled, setScrolled] = useState<boolean>(false);
+  
 
   // Random participant count that changes on mount
   const [dailyParticipants, setDailyParticipants] = useState<number>(0);
 
   useEffect(() => {
     document.title = "Home | Hyper Quizzes"
-    const handleScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    
-    // Generate random participant count between 800-5000
+   
+
     setDailyParticipants(Math.floor(Math.random() * 4200) + 800)
     
-    return () => window.removeEventListener('scroll', handleScroll)
+ 
   }, []);
 
   useEffect(() => {
@@ -38,12 +36,7 @@ export default function Home() {
     }
   }, [isDark]);
 
-  const stats = [
-    { value: '10K+', label: 'Active Quizzes', icon: <Zap className="w-4 h-4" /> },
-    { value: '50K+', label: 'Players', icon: <Users className="w-4 h-4" /> },
-    { value: '100K+', label: 'Questions', icon: <Sparkles className="w-4 h-4" /> },
-    { value: '99%', label: 'Satisfaction', icon: <TrendingUp className="w-4 h-4" /> }
-  ];
+
 
   const mainActions = [
     {
