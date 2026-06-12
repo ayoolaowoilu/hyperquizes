@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, Filter, Users, Trophy, Heart, Play, BookOpen, Grid, X,
   Type, Target, Plus, Bookmark, Clock, CircleQuestionMark,
-   Sparkles,  TrendingUp, 
+  Sparkles, TrendingUp, ChevronLeft, ChevronRight, Loader2
 } from "lucide-react";
 import { fetchRandomQuizzes, fetchSearchByQuery } from "../../lib/quiz";
 import SEO from "../seo";
@@ -33,6 +33,11 @@ interface Quiz {
   passingScore: string;
   likes: number;
   questions?: any[];
+}
+
+interface ApiResponse {
+  data: Quiz[];
+  hasMore: boolean;
 }
 
 const AnimatedBackground = ({ isDark }: { isDark: boolean }) => (
@@ -112,11 +117,9 @@ const QuizCard = ({
             : 'bg-white border-gray-200 hover:border-orange-300'
         }`}
       >
-        {/* Top accent bar */}
         <div className={`h-1 w-full ${quiz.reward > 0 ? 'bg-orange-500' : 'bg-slate-300 dark:bg-slate-700'}`} />
 
         <div className="p-5 flex flex-col flex-1">
-          {/* Header */}
           <div className="flex items-start justify-between gap-3 mb-4">
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border-2 ${getTypeColor(quiz._type)}`}>
               <TypeIcon className="w-6 h-6" />
@@ -136,17 +139,14 @@ const QuizCard = ({
             </div>
           </div>
 
-          {/* Title */}
           <h3 className={`font-bold text-base leading-snug mb-2 line-clamp-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
             {quiz.quiz_name}
           </h3>
 
-          {/* Creator */}
           <p className={`text-sm mb-4 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
             by <span className="font-medium">{quiz.creator_id}</span>
           </p>
 
-          {/* Tags */}
           {quiz.quiz_tags && quiz.quiz_tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
               {quiz.quiz_tags.slice(0, 3).map((tag, i) => (
@@ -157,7 +157,6 @@ const QuizCard = ({
             </div>
           )}
 
-          {/* Stats Grid */}
           <div className="mt-auto grid grid-cols-2 gap-3 mb-4">
             <div className={`p-2.5 rounded-lg ${isDark ? 'bg-slate-800/50' : 'bg-gray-50'}`}>
               <div className="flex items-center gap-1.5 text-xs mb-1">
@@ -189,7 +188,6 @@ const QuizCard = ({
             </div>
           </div>
 
-          {/* Footer info */}
           <div className="flex items-center justify-between pt-3 border-t border-dashed ${isDark ? 'border-slate-800' : 'border-gray-200'}">
             <span className={`text-xs font-medium px-2.5 py-1 rounded-md border ${getTypeColor(quiz._type)}`}>
               {getTypeLabel(quiz._type)}
@@ -203,38 +201,24 @@ const QuizCard = ({
           </div>
         </div>
 
-        {/* Hover overlay with actions */}
         <div className={`absolute inset-0 flex flex-col justify-end p-4 transition-all duration-300 ${
           isDark ? 'bg-slate-950/90' : 'bg-white/95'
         } opacity-0 group-hover:opacity-100 backdrop-blur-sm`}>
           <div className="space-y-3">
-            <button
-              onClick={onPlay}
-              className="w-full py-3 bg-orange-500 text-white rounded-xl font-bold text-sm hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
-            >
+            <button onClick={onPlay} className="w-full py-3 bg-orange-500 text-white rounded-xl font-bold text-sm hover:bg-orange-600 transition-colors flex items-center justify-center gap-2">
               <Play className="w-4 h-4" />
               Start Quiz
             </button>
             <div className="flex gap-2">
-              <button
-                onClick={onSave}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-medium border-2 transition-colors flex items-center justify-center gap-2 ${
-                  isSaved 
-                    ? 'bg-amber-50 border-amber-200 text-amber-600' 
-                    : isDark ? 'border-slate-700 text-slate-300 hover:bg-slate-800' : 'border-gray-200 text-slate-600 hover:bg-gray-50'
-                }`}
-              >
+              <button onClick={onSave} className={`flex-1 py-2.5 rounded-xl text-sm font-medium border-2 transition-colors flex items-center justify-center gap-2 ${
+                isSaved ? 'bg-amber-50 border-amber-200 text-amber-600' : isDark ? 'border-slate-700 text-slate-300 hover:bg-slate-800' : 'border-gray-200 text-slate-600 hover:bg-gray-50'
+              }`}>
                 <Bookmark className={`w-4 h-4 ${isSaved ? "fill-current" : ""}`} />
                 {isSaved ? 'Saved' : 'Save'}
               </button>
-              <button
-                onClick={onLike}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-medium border-2 transition-colors flex items-center justify-center gap-2 ${
-                  isLiked 
-                    ? 'bg-rose-50 border-rose-200 text-rose-600' 
-                    : isDark ? 'border-slate-700 text-slate-300 hover:bg-slate-800' : 'border-gray-200 text-slate-600 hover:bg-gray-50'
-                }`}
-              >
+              <button onClick={onLike} className={`flex-1 py-2.5 rounded-xl text-sm font-medium border-2 transition-colors flex items-center justify-center gap-2 ${
+                isLiked ? 'bg-rose-50 border-rose-200 text-rose-600' : isDark ? 'border-slate-700 text-slate-300 hover:bg-slate-800' : 'border-gray-200 text-slate-600 hover:bg-gray-50'
+              }`}>
                 <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
                 {isLiked ? 'Liked' : 'Like'}
               </button>
@@ -243,6 +227,84 @@ const QuizCard = ({
         </div>
       </div>
     </motion.div>
+  );
+};
+
+// Pagination Buttons Component
+const Pagination = ({
+  currentPage,
+  hasMore,
+  isDark,
+  onPageChange,
+  loading
+}: {
+  currentPage: number;
+  hasMore: boolean;
+  isDark: boolean;
+  onPageChange: (page: number) => void;
+  loading: boolean;
+}) => {
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    if (currentPage > 2) pages.push(1);
+    if (currentPage > 3) pages.push('...');
+    if (currentPage > 1) pages.push(currentPage - 1);
+    pages.push(currentPage);
+    if (hasMore) pages.push(currentPage + 1);
+    if (hasMore && currentPage === 1) pages.push(currentPage + 2);
+    return pages;
+  };
+
+  return (
+    <div className="flex items-center justify-center gap-2 mt-10">
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage <= 1 || loading}
+        className={`p-2.5 rounded-xl border-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+          isDark 
+            ? 'bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-800 hover:border-slate-600' 
+            : 'bg-white border-gray-200 text-slate-700 hover:bg-gray-50 hover:border-gray-300'
+        }`}
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+
+      <div className="flex items-center gap-1.5">
+        {getPageNumbers().map((page, idx) => (
+          <div key={idx}>
+            {page === '...' ? (
+              <span className={`px-3 py-2 text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>...</span>
+            ) : (
+              <button
+                onClick={() => onPageChange(page as number)}
+                disabled={loading}
+                className={`min-w-[40px] h-10 px-3 rounded-xl text-sm font-semibold border-2 transition-all ${
+                  currentPage === page
+                    ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/25'
+                    : isDark 
+                      ? 'bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-800 hover:border-slate-600' 
+                      : 'bg-white border-gray-200 text-slate-700 hover:bg-gray-50 hover:border-gray-300'
+                }`}
+              >
+                {page}
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={!hasMore || loading}
+        className={`p-2.5 rounded-xl border-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+          isDark 
+            ? 'bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-800 hover:border-slate-600' 
+            : 'bg-white border-gray-200 text-slate-700 hover:bg-gray-50 hover:border-gray-300'
+        }`}
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
   );
 };
 
@@ -270,10 +332,9 @@ export default function Explore() {
   const [savedQuizzes, setSavedQuizzes] = useState<number[]>([]);
   const [likedQuizzes, setLikedQuizzes] = useState<number[]>([]);
   
-  // Data state - aligned with your API (flat array)
-  // const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [allQuizzes, setAllQuizzes] = useState<Quiz[]>([]); // Accumulated across pages
-  const [hasMore, setHasMore] = useState(true);
+  // Data state - now properly typed for { data, hasMore }
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [hasMore, setHasMore] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const categories = ["All", "Science", "History", "Technology", "Sports", "Arts", "Geography", "Math", "Language"];
@@ -290,36 +351,27 @@ export default function Explore() {
     if (page > 1) newParams.set('page', page.toString());
     else newParams.delete('page');
     setSearchParams(newParams, { replace: true });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Fetch data - aligned with your API that returns flat array
-  const fetchData = useCallback(async (page: number, isNewSearch = false) => {
+  // Fetch data - properly handles { data, hasMore }
+  const fetchData = useCallback(async (page: number) => {
     if (loading) return;
     
     try {
       setLoading(true);
       
-      let data;
+      let response: ApiResponse;
       
       if (searchQuery.trim()) {
-        data = await fetchSearchByQuery(searchQuery,page);
+        response = await fetchSearchByQuery(searchQuery, page);
       } else {
-        data = await fetchRandomQuizzes(page);
+        response = await fetchRandomQuizzes(page);
       }
       
-      // Your API returns array directly, not paginated object
-      if (isNewSearch) {
-        setAllQuizzes(data.data);
-      } else {
-        setAllQuizzes(prev => {
-          const existingIds = new Set(prev.map(q => q.id));
-          const newItems = data.filter((q:any) => !existingIds.has(q.id));
-          return [...prev, ...newItems];
-        });
-      }
-      
-      
-      setHasMore(data.hasMore);
+      // Properly destructure the response
+      setQuizzes(response.data);
+      setHasMore(response.hasMore);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -327,33 +379,24 @@ export default function Explore() {
     }
   }, [searchQuery, loading]);
 
-  // Initial load and page changes
+  // Fetch when page changes
   useEffect(() => {
-    fetchData(currentPage, currentPage === 1);
-  }, [currentPage]);
+    fetchData(currentPage);
+  }, [currentPage, fetchData]);
 
   // Search debounce
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (searchQuery.trim()) {
         goToPage(1);
-        fetchData(1, true);
       }
     }, 500);
     return () => clearTimeout(timeout);
   }, [searchQuery]);
 
-  // Client-side pagination of accumulated data
-  const itemsPerPage = 12;
-  const paginatedQuizzes = useMemo(() => {
-    const start = 0;
-    const end = currentPage * itemsPerPage;
-    return allQuizzes.slice(start, end);
-  }, [allQuizzes, currentPage]);
-
-  // Client-side filtering and sorting
+  // Client-side filtering and sorting (on current page data only)
   const filteredQuizzes = useMemo(() => {
-    let result = [...paginatedQuizzes];
+    let result = [...quizzes];
     
     if (selectedCategory !== "All") {
       result = result.filter(q => q.quiz_tags?.includes(selectedCategory));
@@ -379,13 +422,7 @@ export default function Explore() {
     }
     
     return result;
-  }, [paginatedQuizzes, selectedCategory, selectedType, sortBy]);
-
-  const loadMore = () => {
-    if (!loading && hasMore) {
-      goToPage(currentPage + 1);
-    }
-  };
+  }, [quizzes, selectedCategory, selectedType, sortBy]);
 
   const toggleSave = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -493,10 +530,11 @@ export default function Explore() {
           </AnimatePresence>
         </div>
 
-        {/* Active filters display */}
+        {/* Active filters */}
         <div className="flex items-center justify-between mb-6">
           <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-            Showing <span className="font-semibold text-orange-500">{filteredQuizzes.length}</span> of {allQuizzes.length} quizzes
+            Showing <span className="font-semibold text-orange-500">{filteredQuizzes.length}</span> quizzes
+            <span className="ml-2 text-xs">Page {currentPage}</span>
           </p>
           <div className="flex gap-2">
             {selectedCategory !== "All" && (
@@ -514,8 +552,16 @@ export default function Explore() {
           </div>
         </div>
 
+        {/* Loading state */}
+        {loading && quizzes.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="w-10 h-10 text-orange-500 animate-spin mb-4" />
+            <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Loading quizzes...</p>
+          </div>
+        )}
+
         {/* Quiz Grid */}
-        {filteredQuizzes.length === 0 && !loading ? (
+        {!loading && filteredQuizzes.length === 0 ? (
           <div className="text-center py-20">
             <div className={`w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center ${isDark ? 'bg-slate-900' : 'bg-gray-100'}`}>
               <Search className={`w-10 h-10 ${isDark ? 'text-slate-700' : 'text-slate-400'}`} />
@@ -543,38 +589,22 @@ export default function Explore() {
               </AnimatePresence>
             </motion.div>
 
-            {/* Load More */}
-            <div className="mt-12 flex flex-col items-center gap-6">
-              {loading && (
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-              )}
-
-              {hasMore && !loading && (
-                <button onClick={loadMore}
-                  className={`px-8 py-3 rounded-xl font-semibold border-2 transition-all hover:scale-105 ${isDark ? 'bg-slate-900 border-slate-700 text-slate-300 hover:border-orange-500/50' : 'bg-white border-gray-200 text-slate-700 hover:border-orange-300'}`}>
-                  Load More Quizzes
-                </button>
-              )}
-
-              {!hasMore && allQuizzes.length > 0 && (
-                <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                  You've reached the end
-                </p>
-              )}
-            </div>
+            {/* Pagination Buttons */}
+            <Pagination
+              currentPage={currentPage}
+              hasMore={hasMore}
+              isDark={isDark}
+              onPageChange={goToPage}
+              loading={loading}
+            />
           </>
         )}
       </main>
 
       <Footer isDark={isDark} />
       
-      {/* FAB */}
       <button onClick={() => navigate('/create-quiz')}
-        className={`fixed bottom-6 right-6 lg:hidden w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center transition-transform hover:scale-110 active:scale-95 z-40 bg-orange-500 text-white`}>
+        className="fixed bottom-6 right-6 lg:hidden w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center transition-transform hover:scale-110 active:scale-95 z-40 bg-orange-500 text-white">
         <Plus className="w-6 h-6" />
       </button>
 
