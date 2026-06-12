@@ -24,7 +24,7 @@ export default function JoinQuiz() {
     setRecentCodes(updated)
     localStorage.setItem('recentQuizCodes', JSON.stringify(updated))
     
-    navigate(`/playerinfo?code=${roomCode.trim()}`)
+    navigate(`/join-quiz?id=${roomCode.trim()}`)
   }
 
   const quickJoin = (code: string) => {
