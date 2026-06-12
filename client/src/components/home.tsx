@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react"
 import { useNavigate } from "react-router-dom"
-import { Link2, ArrowRight, Users, Clock, Sparkles } from "lucide-react"
+import { Link2, ArrowRight, Users, Clock, Sparkles, Trophy } from "lucide-react"
 import Navbar from "./layout/navbar"
 import Footer from "./layout/footer"
 
