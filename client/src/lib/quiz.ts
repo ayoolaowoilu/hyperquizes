@@ -63,10 +63,10 @@ const API_URL = import.meta.env.VITE_URL || "http://localhost:1234";
 
 const fetchSearchByQuery = async (query:string , page:number) => {
     try {
-       const response = await fetch(`${API_URL}/quizes/searchquery?page=${page}`,{
+       const response = await fetch(`${API_URL}/quizes/searchquery`,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({query})
+            body:JSON.stringify({query,page})
        });
         const data = await response.json();
         return data;
