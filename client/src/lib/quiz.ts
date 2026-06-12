@@ -49,9 +49,9 @@ const API_URL = import.meta.env.VITE_URL || "http://localhost:1234";
          }   
   }
 
-  const fetchRandomQuizzes = async () => {
+  const fetchRandomQuizzes = async (page:number) => {
     try {
-       const response = await fetch(`${API_URL}/quizes/random10`);
+       const response = await fetch(`${API_URL}/quizes/random10?page=${page}`);
         const data = await response.json();
         return data;
 }
@@ -61,9 +61,9 @@ const API_URL = import.meta.env.VITE_URL || "http://localhost:1234";
       }
 }
 
-const fetchSearchByQuery = async (query:string) => {
+const fetchSearchByQuery = async (query:string , page:number) => {
     try {
-       const response = await fetch(`${API_URL}/quizes/searchquery`,{
+       const response = await fetch(`${API_URL}/quizes/searchquery?page=${page}`,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({query})
