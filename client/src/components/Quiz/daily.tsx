@@ -9,7 +9,8 @@ import SEO from "../seo";
 
 
 
-// Types
+
+
 interface DailyQuiz {
     _name :string;
   id: number;
@@ -224,8 +225,8 @@ export default function DailyQuiz() {
 
   // Theme Classes
   const themeClasses = isDark 
-    ? "bg-gradient-to-br from-slate-900 via-slate-800 to-orange-900 text-white"
-    : "bg-gradient-to-br from-orange-50 via-white to-orange-100 text-slate-900";
+    ? "bg-linear-to-br from-slate-900 via-slate-800 to-orange-900 text-white"
+    : "bg-linear-to-br from-orange-50 via-white to-orange-100 text-slate-900";
 
   const glassClasses = isDark
     ? "bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl"
@@ -246,7 +247,7 @@ export default function DailyQuiz() {
           </p>
           <button
             onClick={()=>window.location.href = "/login"}
-            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="px-6 py-3 bg-linear-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
            login
           </button>
@@ -268,7 +269,7 @@ export default function DailyQuiz() {
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full"
           />
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold bg-linear-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
             HyperQuizzes
           </h2>
           <p className={isDark ? "text-white/70" : "text-slate-600"}>
@@ -295,7 +296,7 @@ export default function DailyQuiz() {
           </p>
           <button
             onClick={fetchTodaysQuiz}
-            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="px-6 py-3 bg-linear-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             Try Again
           </button>
@@ -314,7 +315,7 @@ export default function DailyQuiz() {
           className={`${glassClasses} rounded-3xl p-12 text-center max-w-lg`}
         >
           <img src={logo} alt="HyperQuizzes" className="w-24 h-24 mx-auto mb-6 opacity-50" />
-          <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold mb-4 bg-linear-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
             HyperQuizzes
           </h1>
           <p className={`text-lg ${isDark ? "text-white/70" : "text-slate-600"}`}>
@@ -340,7 +341,7 @@ export default function DailyQuiz() {
           >
             <div className="flex items-center gap-3">
               <img src={logo} alt="HyperQuizzes" className="w-10 h-10" />
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-linear-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
                 HyperQuizzes
               </h1>
             </div>
@@ -364,7 +365,7 @@ export default function DailyQuiz() {
                   rotate: [0, 180, 360]
                 }}
                 transition={{ duration: 20, repeat: Infinity }}
-                className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-full blur-3xl"
+                className="absolute -top-1/2 -right-1/2 w-full h-full bg-linear-to-br from-orange-500/20 to-amber-500/20 rounded-full blur-3xl"
               />
             </div>
 
@@ -373,7 +374,7 @@ export default function DailyQuiz() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", delay: 0.4 }}
-                className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+                className="w-24 h-24 bg-linear-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
               >
                 <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -482,7 +483,7 @@ export default function DailyQuiz() {
                 whileHover={{ rotate: 360, scale: 1.1 }}
                 transition={{ duration: 0.5 }}
               />
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-linear-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
                 HyperQuizzes
               </h1>
             </div>
@@ -524,7 +525,7 @@ export default function DailyQuiz() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", delay: 0.4 }}
-                  className="inline-block p-4 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl mb-6 shadow-lg"
+                  className="inline-block p-4 bg-linear-to-br from-orange-500 to-amber-500 rounded-2xl mb-6 shadow-lg"
                 >
                   <span className="text-4xl"><BookAudioIcon /></span>
                 </motion.div>
@@ -593,7 +594,7 @@ export default function DailyQuiz() {
                   onClick={handleStartQuiz}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-orange-500/30 transition-all duration-300 overflow-hidden"
+                  className="group relative px-8 py-4 bg-linear-to-r from-orange-500 via-amber-500 to-orange-500 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-orange-500/30 transition-all duration-300 overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     Start Quiz 
@@ -605,7 +606,7 @@ export default function DailyQuiz() {
                     </motion.span>
                   </span>
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500"
+                    className="absolute inset-0 bg-linear-to-r from-amber-500 via-orange-500 to-amber-500"
                     animate={{ x: ["-100%", "100%"] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                     style={{ opacity: 0.3 }}
@@ -640,7 +641,7 @@ export default function DailyQuiz() {
         >
           <div className="flex items-center gap-3">
             <img src={logo} alt="HyperQuizzes" className="w-8 h-8" />
-            <h1 className="text-xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
+            <h1 className="text-xl font-bold bg-linear-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
               HyperQuizzes
             </h1>
           </div>
@@ -665,7 +666,7 @@ export default function DailyQuiz() {
         <div className="mb-6">
           <div className={`h-2 ${isDark ? "bg-white/10" : "bg-slate-200"} rounded-full overflow-hidden`}>
             <motion.div 
-              className="h-full bg-gradient-to-r from-orange-500 to-amber-500"
+              className="h-full bg-linear-to-r from-orange-500 to-amber-500"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5 }}
@@ -795,7 +796,7 @@ export default function DailyQuiz() {
               whileTap={hasAnsweredCurrent ? { scale: 0.95 } : {}}
               className={`px-8 py-3 rounded-xl font-bold transition-all duration-300 ${
                 hasAnsweredCurrent
-                  ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg hover:shadow-green-500/30"
+                  ? "bg-linear-to-r from-green-500 to-emerald-500 text-white shadow-lg hover:shadow-green-500/30"
                   : "opacity-30 cursor-not-allowed bg-slate-500 text-white"
               }`}
             >
@@ -809,7 +810,7 @@ export default function DailyQuiz() {
               whileTap={hasAnsweredCurrent ? { scale: 0.95 } : {}}
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                 hasAnsweredCurrent
-                  ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg hover:shadow-orange-500/30"
+                  ? "bg-linear-to-r from-orange-500 to-amber-500 text-white shadow-lg hover:shadow-orange-500/30"
                   : "opacity-30 cursor-not-allowed bg-slate-500 text-white"
               }`}
             >
@@ -881,8 +882,8 @@ export default function DailyQuiz() {
                   transition={{ type: "spring", delay: 0.2 }}
                   className={`w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center ${
                     quizState.score >= quiz.passingScore
-                      ? "bg-gradient-to-br from-green-400 to-emerald-500"
-                      : "bg-gradient-to-br from-orange-400 to-amber-500"
+                      ? "bg-linear-to-br from-green-400 to-emerald-500"
+                      : "bg-linear-to-br from-orange-400 to-amber-500"
                   }`}
                 >
                   <span className="text-4xl text-white font-bold">{quizState.score}%</span>
@@ -918,7 +919,7 @@ export default function DailyQuiz() {
                   onClick={() => window.location.reload()}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-bold shadow-lg hover:shadow-orange-500/30 transition-all duration-300"
+                  className="px-8 py-3 bg-linear-to-r from-orange-500 to-amber-500 text-white rounded-xl font-bold shadow-lg hover:shadow-orange-500/30 transition-all duration-300"
                 >
                   Back to Home
                 </motion.button>
@@ -927,6 +928,8 @@ export default function DailyQuiz() {
           </motion.div>
         )}
       </AnimatePresence>
+
+    
     </div>
   );
 }

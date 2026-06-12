@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import logo from "../../assets/carrot-diet-fruit-svgrepo-com.svg";
+
 import {
   Plus,
   Trash2,
@@ -10,12 +10,11 @@ import {
   Trophy,
   Save,
   X,
-  ChevronLeft,
+
   ChevronRight,
   CheckCircle2,
   AlertCircle,
-  Type,
-  List,
+
   HelpCircle,
   Timer,
 
@@ -23,19 +22,18 @@ import {
   MessageSquare,
   BookOpen,
   ArrowLeft,
-  Moon,
-  Sun,
 
   Copy,
   Check,
   Settings,
   Tag,
-  BarChart3,
   Loader2,
 } from "lucide-react";
 import { getUserData } from "../../lib/auth";
 import { Add_quiz } from "../../lib/quiz";
 import SEO from "../seo";
+import Navbar from "../layout/navbar";
+import Footer from "../layout/footer";
 
 type QuizType = "TOF" | "MCQ" | "SAQ";
 
@@ -49,9 +47,9 @@ interface Question {
 
 
 const AnimatedBackground = ({ isDark }: { isDark: boolean }) => (
-  <div className={`fixed inset-0 overflow-hidden pointer-events-none transition-colors duration-500 ${isDark ? 'bg-slate-950' : 'bg-orange-50'}`}>
-    <div className={`absolute top-0 left-0 w-full h-full opacity-30 ${isDark ? 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-900/20 via-slate-950 to-slate-950' : 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-200/50 via-orange-50 to-white'}`} />
-    <div className={`absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] ${isDark ? 'opacity-20' : 'opacity-40'}`} />
+  <div className={`fixed inset-0 overflow-hidden pointer-events-none transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-orange-50'}`}>
+    <div className={`absolute top-0 left-0 w-full h-full opacity-30 ${isDark ? 'bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-orange-900/20 via-slate-950 to-slate-950' : 'bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-orange-200/50 via-orange-50 to-white'}`} />
+    <div className={`absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] ${isDark ? 'opacity-20' : 'opacity-40'}`} />
   </div>
 );
 
@@ -184,7 +182,7 @@ export default function CreateQuiz() {
   const [copied, setCopied] = useState(false);
   const [quizId, setQuizId] = useState<number | null>(null);
 
-  // Quiz Settings - Strictly following Quiz_loaded interface
+
   const [quizType, setQuizType] = useState<QuizType>("MCQ");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -194,60 +192,23 @@ export default function CreateQuiz() {
   const [isOneTime, setIsOneTime] = useState(false);
   const [passingScore, setPassingScore] = useState(70);
 
-  // Questions - Strictly following Question interface
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // UI State
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const profileRef = useRef<HTMLDivElement>(null);
-
-  const email = localStorage.getItem("email");
-  const userId = localStorage.getItem("id");
-  const username = localStorage.getItem("username");
-  const displayName = username ? `@${username}` : `User${userId}`;
-  const avatarLetter = (username || `User${userId}`).charAt(0).toUpperCase();
 
   useEffect(() => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', isDark);
   }, [isDark]);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+ 
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
-        setProfileOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const toggleTheme = () => setIsDark(!isDark);
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    localStorage.removeItem("email");
-    localStorage.removeItem("id");
-    window.location.href = "/login";
-  };
-
-  // Generate random reward between 1-60 only if isOneTime is true
   const generateReward = () => {
     return isOneTime ? Math.floor(Math.random() * 60) + 1 : 0;
   };
 
-  // Question Management - Strictly single type per quiz
+  
   const addQuestion = () => {
     const newQuestion: Question = {
       id: Date.now().toString(),
@@ -388,7 +349,7 @@ const userid = localStorage.getItem("id")
     }
   };
 
-  // Validation
+ 
   const canProceedToQuestions = title.trim().length >= 3 && quizType;
   const canPublish = questions.length > 0 && questions.every(q => q.question.trim() && q.answer.trim());
 
@@ -399,152 +360,14 @@ const userid = localStorage.getItem("id")
         title="Create Quizzes" 
         description="Lets push the creative agenda!" 
       />
-      {/* Header */}
-      <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 border-b ${
-        scrolled 
-          ? (isDark ? 'bg-slate-950/95 shadow-lg shadow-orange-500/10 border-slate-800' : 'bg-white/95 shadow-md shadow-orange-500/10 border-slate-200') 
-          : (isDark ? 'bg-slate-950/80 border-slate-800' : 'bg-white/80 border-slate-200')
-      } backdrop-blur-xl`}>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-3">
-              <a href="/home" className="flex items-center gap-3 group">
-                <div className={`p-2 rounded-xl transition-all duration-300 group-hover:scale-110 border ${
-                  isDark ? 'bg-gradient-to-br from-orange-500/20 to-orange-600/10 border-orange-500/30' : 'bg-orange-100 border-orange-200'
-                }`}>
-                  <img src={logo} alt="Hyper Quizes" className="w-8 h-8" />
-                </div>
-                <span className={`text-xl font-bold transition-colors duration-300 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Hyper<span className="text-orange-500">Quizzes</span>
-                </span>
-              </a>
-            </div>
+   
+    
 
-            <div className="hidden lg:flex items-center gap-8">
-              <nav className="flex items-center gap-6">
-                {[
-                  { name: 'Home', href: '/home' },
-                  { name: 'Join Quiz', href: '/join-quiz' },
-                  { name: 'Create Quiz', href: '/create-quiz', active: true },
-                  { name: 'Stats', href: '/stats' }
-                ].map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={`text-sm font-medium transition-colors duration-300 relative py-2 ${
-                      item.active 
-                        ? 'text-orange-500' 
-                        : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    {item.name}
-                    {item.active && (
-                      <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full" />
-                    )}
-                  </a>
-                ))}
-              </nav>
+     <Navbar onThemeChange={setIsDark} />
 
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={toggleTheme}
-                  className={`p-2.5 rounded-xl transition-all duration-300 hover:scale-110 border ${
-                    isDark ? 'bg-slate-900 text-orange-400 border-slate-800 hover:border-orange-500/50' : 'bg-slate-100 text-slate-600 border-slate-200 hover:border-orange-300'
-                  }`}
-                >
-                  {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </button>
-
-                <div className="relative" ref={profileRef}>
-                  <button
-                    onClick={() => setProfileOpen(!profileOpen)}
-                    className={`flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-all duration-300 border ${
-                      isDark ? 'bg-slate-900/80 border-slate-800 hover:border-orange-500/60' : 'bg-white border-slate-200 hover:border-orange-300'
-                    } ${profileOpen ? (isDark ? 'border-orange-500' : 'border-orange-400') : ''}`}
-                  >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-orange-500/30">
-                      {avatarLetter}
-                    </div>
-                    <ChevronLeft className={`w-4 h-4 transition-transform duration-300 ${isDark ? 'text-slate-400' : 'text-slate-500'} ${profileOpen ? '-rotate-90' : ''}`} />
-                  </button>
-
-                  <div className={`absolute right-0 mt-2 w-72 rounded-2xl shadow-2xl border transition-all duration-300 transform origin-top-right ${
-                    profileOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
-                  } ${isDark ? 'bg-slate-950/95 border-slate-800 backdrop-blur-xl' : 'bg-white border-slate-200'}`}>
-                    <div className={`p-4 border-b ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-orange-500/30">
-                          {avatarLetter}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className={`font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>{displayName}</p>
-                          <p className={`text-sm truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{email || 'No email'}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-2">
-                      <a href="/profile" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200 ${
-                        isDark ? 'text-slate-300 hover:bg-orange-500/10 hover:text-orange-400' : 'text-slate-700 hover:bg-orange-50 hover:text-orange-600'
-                      }`}>
-                        <Type className="w-5 h-5" />
-                        Profile Settings
-                      </a>
-                      <a href="/stats" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200 ${
-                        isDark ? 'text-slate-300 hover:bg-orange-500/10 hover:text-orange-400' : 'text-slate-700 hover:bg-orange-50 hover:text-orange-600'
-                      }`}>
-                        <BarChart3 className="w-5 h-5" />
-                        My Stats
-                      </a>
-                      <div className={`my-2 border-t ${isDark ? 'border-slate-800' : 'border-slate-100'}`} />
-                      <button onClick={logout} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200 ${
-                        isDark ? 'text-rose-400 hover:bg-rose-500/10' : 'text-rose-600 hover:bg-rose-50'
-                      }`}>
-                        <X className="w-5 h-5" />
-                        Sign Out
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex lg:hidden items-center gap-2">
-              <button onClick={toggleTheme} className={`p-2 rounded-lg transition-colors duration-300 border ${
-                isDark ? 'bg-slate-900 text-orange-400 border-slate-800' : 'bg-slate-100 text-slate-600 border-slate-200'
-              }`}>
-                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </button>
-              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className={`p-2 rounded-lg transition-colors duration-300 border ${
-                isDark ? 'bg-slate-900 text-white border-slate-800' : 'bg-slate-100 text-slate-600 border-slate-200'
-              }`}>
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <List className="w-6 h-6" />}
-              </button>
-            </div>
-          </div>
-
-          {mobileMenuOpen && (
-            <div className={`lg:hidden py-4 border-t ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
-              <nav className="flex flex-col gap-2">
-                {['Home', 'Join Quiz', 'Create Quiz', 'Stats'].map((item) => (
-                  <a key={item} href={`/${item.toLowerCase().replace(' ', '-')}`} className={`px-4 py-3 rounded-xl text-sm font-medium ${
-                    item === 'Create Quiz' 
-                      ? (isDark ? 'bg-orange-500/20 text-orange-400' : 'bg-orange-100 text-orange-600') 
-                      : (isDark ? 'text-slate-300 hover:bg-slate-900' : 'text-slate-700 hover:bg-slate-100')
-                  }`}>
-                    {item}
-                  </a>
-                ))}
-              </nav>
-            </div>
-          )}
-        </div>
-      </header>
-
-      <div className="h-16" />
-
-      {/* Main Content */}
+    
       <main className="relative z-10 max-w-7xl mx-auto px-4 py-8">
-        {/* Progress Steps */}
+      
         <div className="mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             {[1, 2, 3].map((s) => (
@@ -880,7 +703,7 @@ const userid = localStorage.getItem("id")
             {/* Main - Question Editor */}
             <div className="lg:col-span-2">
               {!currentQuestion ? (
-                <GlassCard className="h-full min-h-[400px] flex items-center justify-center" isDark={isDark}>
+                <GlassCard className="h-full min-h-100 flex items-center justify-center" isDark={isDark}>
                   <div className="text-center">
                     <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
                       isDark ? 'bg-slate-800' : 'bg-slate-100'
@@ -1039,7 +862,7 @@ const userid = localStorage.getItem("id")
         {step === 3 && (
           <div className="max-w-md mx-auto text-center">
             <GlassCard className="p-8" isDark={isDark}>
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-xl shadow-orange-500/30">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-linear-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-xl shadow-orange-500/30">
                 <CheckCircle2 className="w-10 h-10 text-white" />
               </div>
               
@@ -1090,6 +913,8 @@ const userid = localStorage.getItem("id")
           </div>
         )}
       </main>
+
+      <Footer isDark={isDark} />
     </div>
   );
 }
