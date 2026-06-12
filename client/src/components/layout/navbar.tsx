@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import logo from "../../assets/carrot-diet-fruit-svgrepo-com.svg"
 
+
 interface props {
      onThemeChange:(e:boolean)=>void
 }
@@ -94,7 +95,7 @@ export default function Navbar({ onThemeChange }:props){
                   { name: 'Home', href: '/home' , active:false },
                   { name: 'Join Quiz', href: '/join-quiz' },
                   { name: 'Create Quiz', href: '/create-quiz' },
-                  { name: 'Stats', href: '/stats' }
+                  { name: 'Stats', href: '/stats' },{name:"Explore",href:"/explore"}
                 ].map((item) => (
                   <a
                     key={item.name}

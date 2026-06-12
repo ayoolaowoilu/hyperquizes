@@ -577,14 +577,15 @@ export default function JoinQuiz() {
               </a>
             </div>
 
-            {/* Desktop Navigation */}
+         
             <div className="hidden lg:flex items-center gap-8">
               <nav className="flex items-center gap-6">
                 {[
                   { name: 'Home', href: '/home',  },
-                  { name: 'Join Quiz', href: '/join-quiz' , active : true },
+                  { name: 'Join Quiz', href: '/join-quiz' , active : false},
                   { name: 'Create Quiz', href: '/create-quiz' },
-                  { name: 'Stats', href: '/stats' }
+                  { name: 'Stats', href: '/stats' },
+                  {name:"Explore" , href:"/explore"}
                 ].map((item) => (
                   <a
                     key={item.name}
