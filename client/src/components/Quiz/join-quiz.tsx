@@ -230,9 +230,9 @@ const like_quiz_data = (id: any) => {
   }
 
   liked_data.push(id);
-  localStorage.setItem("liked", JSON.stringify(liked_data)); // ← missing this
+  localStorage.setItem("liked", JSON.stringify(liked_data));
 
-  like_quiz(Number(id)); // API call
+  like_quiz(Number(id)); 
 };
 
 
@@ -917,6 +917,9 @@ const like_quiz_data = (id: any) => {
               </span>
               <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>
                 {new Date(Number(quiz.time_posted)).toLocaleDateString()}
+              </span>
+                  <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>
+                { quiz.likes}
               </span>
             </div>
           </GlassCard>
