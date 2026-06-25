@@ -202,37 +202,38 @@ export default function JoinQuiz() {
   }
 
 
-   const is_liked = (id:any) =>{
-      let liked_data;
-      const likes = localStorage.getItem("liked")
+  const is_liked = (id: any) => {
+  const likes = localStorage.getItem("liked");
+  let liked_data: any[] = [];
 
-      try{
-         liked_data = JSON.parse(likes as string)
-      }catch{
-          liked_data = likes
-      }
-      
-      if(liked_data?.find((ld:any)=> ld == id)){
-        return true
-      }else {
-         return false
-      }
-   }
+  try {
+    liked_data = JSON.parse(likes as string);
+    if (!Array.isArray(liked_data)) liked_data = [];
+  } catch {
+    liked_data = [];
+  }
 
-   const like_quiz_data= (id:any)=>{
-  if(is_liked(id)) return;
-       let liked_data:any = [];
-      const likes = localStorage.getItem("liked")
+  return liked_data.some((ld: any) => ld == id);
+};
 
-      try{
-         liked_data = JSON.parse(likes as string) || []
-      }catch{
-          liked_data = likes || []
-      }
+const like_quiz_data = (id: any) => {
+  if (is_liked(id)) return;
 
-      liked_data?.push(id)
-      like_quiz(Number(id))  
-   }
+  const likes = localStorage.getItem("liked");
+  let liked_data: any[] = [];
+
+  try {
+    liked_data = JSON.parse(likes as string);
+    if (!Array.isArray(liked_data)) liked_data = [];
+  } catch {
+    liked_data = [];
+  }
+
+  liked_data.push(id);
+  localStorage.setItem("liked", JSON.stringify(liked_data)); // ← missing this
+
+  like_quiz(Number(id)); // API call
+};
 
 
     useEffect(() => {
@@ -968,13 +969,18 @@ export default function JoinQuiz() {
               <Play className="w-4 h-4 mr-2" />
               Start
             </Button>
-            <Button onClick={()=>{
-              
-               like_quiz_data(quiz_id);
+           <Button
+  onClick={() => like_quiz_data(quiz_id)}
+  variant="secondary"
+  className="w-12 shrink-0"
+  isDark={isDark}
+>
+  <Heart
+    className="w-4 h-4"
+    fill={is_liked(quiz_id) ? "red" : "gray"}  // ← fixed: red when liked
+  />
+</Button>
 
-            }} variant="secondary" className="w-12 shrink-0" isDark={isDark}>
-              <Heart className="w-4 h-4" fill={ is_liked(quiz_id) ? "gray" : "red"} />
-            </Button>
             <Button variant="secondary" className="w-12 shrink-0" isDark={isDark}>
               <Share2 className="w-4 h-4" />
             </Button>
