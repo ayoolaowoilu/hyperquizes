@@ -189,6 +189,23 @@ const fetchSearchByQuery = async (query:string , page:number) => {
               console.log(error)
            }
         }
-      
+       
+        const like_quiz = async(quiz_id:number)=>{
+                
+            try {
+                  const resp = fetch(`${API_URL}/quizes/like`,{
+                             method:"POST",
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify({id:quiz_id})
+                  })
 
-  export { getQuizById,updateQuiz,fetchRandomQuizzes , fetchSearchByQuery , Add_quiz , GetQuizesByCreatorId , GetQuizParticipantsHistory , getUserNameById ,followUser ,getDaillyQuiz ,updateDailyQuiz , fetchCategoryQuiz}
+                  return (await resp).json()
+            } catch (error) {
+                  console.log(error)
+                   return {
+                         error :"Failed to update quiz"
+                   }
+            }
+        }
+
+  export { getQuizById,updateQuiz,fetchRandomQuizzes , fetchSearchByQuery , Add_quiz , GetQuizesByCreatorId , GetQuizParticipantsHistory , getUserNameById ,followUser ,getDaillyQuiz ,updateDailyQuiz , fetchCategoryQuiz , like_quiz}

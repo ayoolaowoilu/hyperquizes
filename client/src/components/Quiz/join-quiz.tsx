@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback ,useRef} from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { getQuizById, getUserNameById, updateQuiz } from "../../lib/quiz";
+import { getQuizById, getUserNameById, like_quiz, updateQuiz } from "../../lib/quiz";
 import logo from "../../assets/carrot-diet-fruit-svgrepo-com.svg"
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -200,6 +200,40 @@ export default function JoinQuiz() {
     localStorage.removeItem("id")
     window.location.href = "/login"
   }
+
+
+   const is_liked = (id:any) =>{
+      let liked_data;
+      const likes = localStorage.getItem("liked")
+
+      try{
+         liked_data = JSON.parse(likes as string)
+      }catch{
+          liked_data = likes
+      }
+      
+      if(liked_data?.find((ld:any)=> ld == id)){
+        return true
+      }else {
+         return false
+      }
+   }
+
+   const like_quiz_data= (id:any)=>{
+  if(is_liked(id)) return;
+       let liked_data:any = [];
+      const likes = localStorage.getItem("liked")
+
+      try{
+         liked_data = JSON.parse(likes as string) || []
+      }catch{
+          liked_data = likes || []
+      }
+
+      liked_data?.push(id)
+      like_quiz(Number(id))  
+   }
+
 
     useEffect(() => {
     const handleScroll = () => {
@@ -934,8 +968,12 @@ export default function JoinQuiz() {
               <Play className="w-4 h-4 mr-2" />
               Start
             </Button>
-            <Button variant="secondary" className="w-12 shrink-0" isDark={isDark}>
-              <Heart className="w-4 h-4" />
+            <Button onClick={()=>{
+              
+               like_quiz_data(quiz_id);
+
+            }} variant="secondary" className="w-12 shrink-0" isDark={isDark}>
+              <Heart className="w-4 h-4" fill={is_liked(quiz_id) ? "red" : "gray"} />
             </Button>
             <Button variant="secondary" className="w-12 shrink-0" isDark={isDark}>
               <Share2 className="w-4 h-4" />
