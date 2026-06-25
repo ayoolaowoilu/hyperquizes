@@ -918,8 +918,8 @@ console.log(quiz)
               <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>
                 {new Date(Number(quiz.time_posted)).toLocaleDateString()}
               </span>
-                  <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>
-                { quiz.likes} likes
+                  <span className={isDark ? 'text-white' : 'text-slate-500'}>
+               <Heart size={20} className="my-auto" /> { quiz.likes} likes
               </span>
             </div>
           </GlassCard>
