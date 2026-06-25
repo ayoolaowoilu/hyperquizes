@@ -919,7 +919,7 @@ console.log(quiz)
                 {new Date(Number(quiz.time_posted)).toLocaleDateString()}
               </span>
                   <span className={isDark ? 'text-white flex gap-1' : 'text-slate-500 flex gap-1'}>
-               <Heart size={10} className="my-auto" /> { quiz.likes} likes
+               <Heart size={12} className="my-auto" /> { quiz.likes} likes
               </span>
             </div>
           </GlassCard>
