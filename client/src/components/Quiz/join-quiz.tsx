@@ -235,7 +235,7 @@ const like_quiz_data = (id: any) => {
   like_quiz(Number(id)); 
 };
 
-
+console.log(quiz)
     useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
@@ -919,7 +919,7 @@ const like_quiz_data = (id: any) => {
                 {new Date(Number(quiz.time_posted)).toLocaleDateString()}
               </span>
                   <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>
-                { quiz.likes}
+                { quiz.likes} likes
               </span>
             </div>
           </GlassCard>
