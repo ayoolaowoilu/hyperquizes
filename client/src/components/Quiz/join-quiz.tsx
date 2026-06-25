@@ -973,7 +973,7 @@ export default function JoinQuiz() {
                like_quiz_data(quiz_id);
 
             }} variant="secondary" className="w-12 shrink-0" isDark={isDark}>
-              <Heart className="w-4 h-4" fill={is_liked(quiz_id) ? "red" : "gray"} />
+              <Heart className="w-4 h-4" fill={ is_liked(quiz_id) ? "gray" : "red"} />
             </Button>
             <Button variant="secondary" className="w-12 shrink-0" isDark={isDark}>
               <Share2 className="w-4 h-4" />
