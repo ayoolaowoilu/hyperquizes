@@ -143,9 +143,7 @@ const QuizCard = ({
             {quiz.quiz_name}
           </h3>
 
-          <p className={`text-sm mb-4 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-            by <span className="font-medium">{quiz.creator_id}</span>
-          </p>
+         
 
           {quiz.quiz_tags && quiz.quiz_tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
