@@ -166,6 +166,7 @@ export default function JoinQuiz() {
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [exploreQuery, setExploreQuery] = useState("");
 
@@ -399,58 +400,59 @@ console.log(quiz)
 
   const handleSubmitQuiz = useCallback(async() => {
     if (!quiz) return;
-         setIsLoading(true)
     const timeTaken = quiz.isTimed ? (quiz.duration * 60) - timeRemaining : 0;
     let correctCount = 0;
-    
+
     quiz.questions.forEach((q:any, index:any) => {
       const userAnswer = selectedAnswers[index];
       if (!userAnswer) return;
-      
-     
+
       if (quiz._type === "MCQ" && q.mcqoptions) {
         const correctValue = q.mcqoptions[q.answer];
         if (userAnswer === correctValue) correctCount++;
       } else {
-        
         if (userAnswer?.toLowerCase().trim() === q.awnser?.toLowerCase().trim()) correctCount++;
       }
     });
-    
+
     const score = Math.round((correctCount / quiz.questions.length) * 100);
     const passed = score >= Number(quiz.passingScore);
 
-   const token = localStorage.getItem("token");
-       await getUserData(token)
-   const userid = localStorage.getItem("id")
-   
-    if(!token){
-          setIsLoading(true)
-  const userrr =    await updateQuiz({id:quiz_id,failed: !passed ? 1 : 0 , passed:passed ? 1 : 0})
-   setIsLoading(false)
-   console.log(userrr) 
-    }else{
-          setIsLoading(true)
-  const userrr =  await updateQuiz({
-    id:quiz_id,
-    failed: !passed ? 1 : 0 , 
-    passed:passed ? 1 : 0 ,
-     userId:Number(userid) ,
-     score:score,
-     time_taken:timeTaken,
-     date_taken:Number(Date.now()),
-     passingScore:quiz.passingScore,
-     name:quiz.quiz_name,reward:quiz.reward,creator_id:Number(quiz.creator_id)
-    })
-
-    setIsLoading(false)
-    console.log(userrr)
-    }
-    
-
+    // Show results immediately (optimistic UI)
     setQuizResult({ score, correctAnswers: correctCount, totalQuestions: quiz.questions.length, timeTaken, passed });
     setStage(3);
- 
+
+    // Submit in background and show a tiny "Submitting" popup
+    setIsSubmitting(true);
+    try {
+      const token = localStorage.getItem("token");
+      await getUserData(token).catch(() => null);
+      const userid = localStorage.getItem("id");
+
+      if (!token) {
+        const userrr = await updateQuiz({ id: quiz_id, failed: !passed ? 1 : 0, passed: passed ? 1 : 0 });
+        console.log(userrr);
+      } else {
+        const userrr = await updateQuiz({
+          id: quiz_id,
+          failed: !passed ? 1 : 0,
+          passed: passed ? 1 : 0,
+          userId: Number(userid),
+          score: score,
+          time_taken: timeTaken,
+          date_taken: Number(Date.now()),
+          passingScore: quiz.passingScore,
+          name: quiz.quiz_name,
+          reward: quiz.reward,
+          creator_id: Number(quiz.creator_id)
+        });
+        console.log(userrr);
+      }
+    } catch (err) {
+      console.error("Error submitting quiz:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [quiz, selectedAnswers, timeRemaining]);
 
   const formatTime = (seconds: number) => {
@@ -1369,6 +1371,11 @@ console.log(quiz)
             })}
           </div>
         </div>
+        {isSubmitting && (
+          <div className={`fixed bottom-4 right-4 z-50 px-3 py-1.5 rounded-full text-xs font-medium ${isDark ? 'bg-black/80 text-white' : 'bg-white/90 text-slate-800'} shadow-lg`}>
+            Submitting...
+          </div>
+        )}
       </div>
     );
   }
