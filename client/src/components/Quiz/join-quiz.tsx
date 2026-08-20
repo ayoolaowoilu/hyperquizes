@@ -1264,7 +1264,7 @@ console.log(quiz)
 
             </div>
 
-             <div className="flex items-center gap-3 text-xs">
+             <div className="flex items-center gap-3 text-xs mt-2 ">
               {/* <span onClick={()=> window.location.href = `/playerinfo?id=${quiz.creator_id}`} className={`cursor-pointer px-2.5 py-1 rounded-md ${isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-700'}`}>
                 @{creatorName || "User0" + quiz.creator_id}
               </span>
