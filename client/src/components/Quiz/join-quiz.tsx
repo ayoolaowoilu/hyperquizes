@@ -5,6 +5,7 @@ import logo from "../../assets/carrot-diet-fruit-svgrepo-com.svg"
 import { motion, AnimatePresence } from "framer-motion";
 import { getUserData } from "../../lib/auth";
 import SEO from "../seo";
+import { Users } from "lucide-react";
 
 /* =========================================================================
    ICONS — hand-drawn raw SVGs (no icon library). Same component names as
@@ -239,9 +240,7 @@ const RefreshCcwIcon = (props: IconProps) => (
   </IconBase>
 );
 
-/* =========================================================================
-   INDEXEDDB — store completed attempts locally so users can revisit them.
-   ========================================================================= */
+
 
 const TAKEN_DB_NAME = "hyperquizzes-db";
 const TAKEN_STORE_NAME = "taken_quizzes";
@@ -1257,6 +1256,12 @@ console.log(quiz)
                 <Heart className={`w-3 h-3 ${liked ? 'text-rose-500' : ''}`} fill={liked ? 'currentColor' : 'none'} />
                 {quiz.likes} likes
               </span>
+
+                <span className={`flex items-center gap-1 ${isDark ? 'text-white' : 'text-slate-500'}`}>
+                <Users className={`w-3 h-3 `} />
+                {quiz.completed} played 
+              </span>
+
             </div>
           </GlassCard>
 
