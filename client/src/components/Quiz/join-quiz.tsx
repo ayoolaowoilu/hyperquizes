@@ -1,45 +1,313 @@
-import { useEffect, useState, useCallback ,useRef} from "react";
+import { useEffect, useState, useCallback, useRef, type SVGProps } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { getQuizById, getUserNameById, like_quiz, updateQuiz } from "../../lib/quiz";
 import logo from "../../assets/carrot-diet-fruit-svgrepo-com.svg"
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Trophy, 
-  Clock, 
-  Target, 
-  Play, 
-  ChevronRight, 
-  CheckCircle2, 
-  XCircle, 
-  Timer,
-  Flame,
-  BookOpen,
-  ArrowLeft,
-  Share2,
-  Heart,
-
-  Lock,
-  LogIn,
-  Eye,
-  AlertCircle,
-  Hash,
-  CheckSquare,
-  HelpCircle,
-  MessageSquare,
-
-  Sparkles,
-  ChevronLeft,
-
-  Crown,
-
-  Moon,
-  Sun,
-  Check,
-  RefreshCcwIcon,
-  Book,
-} from "lucide-react";
 import { getUserData } from "../../lib/auth";
 import SEO from "../seo";
+
+/* =========================================================================
+   ICONS — hand-drawn raw SVGs (no icon library). Same component names as
+   before, so every existing <IconName /> usage below keeps working as-is.
+   ========================================================================= */
+
+type IconProps = SVGProps<SVGSVGElement>;
+
+const IconBase = ({ children, ...props }: IconProps & { children: React.ReactNode }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    {children}
+  </svg>
+);
+
+const Trophy = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z" />
+    <path d="M7 5H4a1 1 0 0 0-1 1v1a3 3 0 0 0 3 3" />
+    <path d="M17 5h3a1 1 0 0 1 1 1v1a3 3 0 0 1-3 3" />
+    <path d="M12 13v3" />
+    <path d="M9 20h6" />
+    <path d="M10 16.5h4l.5 3.5h-5l.5-3.5Z" />
+  </IconBase>
+);
+
+const Clock = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3.5 2" />
+  </IconBase>
+);
+
+const Target = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="12" cy="12" r="5" />
+    <circle cx="12" cy="12" r="1" fill="currentColor" />
+  </IconBase>
+);
+
+const Play = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M7 4.5v15l13-7.5-13-7.5Z" fill="currentColor" stroke="none" />
+  </IconBase>
+);
+
+const ChevronRight = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M9 5l7 7-7 7" />
+  </IconBase>
+);
+
+const ChevronLeft = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M15 5l-7 7 7 7" />
+  </IconBase>
+);
+
+const CheckCircle2 = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M8.5 12.5l2.3 2.3L16 10" />
+  </IconBase>
+);
+
+const XCircle = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M9.5 9.5l5 5M14.5 9.5l-5 5" />
+  </IconBase>
+);
+
+const Timer = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M10 2h4" />
+    <circle cx="12" cy="14" r="8" />
+    <path d="M12 10v4l3 2" />
+  </IconBase>
+);
+
+const Flame = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c0-1-.5-2-1-2 1 4-1 6-3 6a4 4 0 0 1-4-4c0-3 2-4 2-7Z" />
+  </IconBase>
+);
+
+const BookOpen = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 6c-1.5-1.3-3.7-2-6-2v13c2.3 0 4.5.7 6 2 1.5-1.3 3.7-2 6-2V4c-2.3 0-4.5.7-6 2Z" />
+    <path d="M12 6v13" />
+  </IconBase>
+);
+
+const Book = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M5 4a2 2 0 0 1 2-2h11v18H7a2 2 0 0 0-2 2V4Z" />
+    <path d="M8 6h6" />
+    <path d="M8 9h6" />
+  </IconBase>
+);
+
+const ArrowLeft = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M19 12H5" />
+    <path d="M11 6l-6 6 6 6" />
+  </IconBase>
+);
+
+const Share2 = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="18" cy="5" r="2.5" />
+    <circle cx="6" cy="12" r="2.5" />
+    <circle cx="18" cy="19" r="2.5" />
+    <path d="M8.3 10.7l7.4-4.4" />
+    <path d="M8.3 13.3l7.4 4.4" />
+  </IconBase>
+);
+
+const Heart = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 20.5s-7-4.4-9.5-9C.9 8 2 4.5 5.3 3.7c2-.5 3.9.3 5.2 1.9.4.5.9.5 1.3 0 1.3-1.6 3.2-2.4 5.2-1.9C20.5 4.5 21.6 8 20 11.5c-2.5 4.6-8 9-8 9Z" />
+  </IconBase>
+);
+
+const Lock = (props: IconProps) => (
+  <IconBase {...props}>
+    <rect x="4" y="10.5" width="16" height="10" rx="2" />
+    <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+  </IconBase>
+);
+
+const LogIn = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M11 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5" />
+    <path d="M15 8l4 4-4 4" />
+    <path d="M19 12H9" />
+  </IconBase>
+);
+
+const Eye = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z" />
+    <circle cx="12" cy="12" r="2.7" />
+  </IconBase>
+);
+
+const AlertCircle = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7.5v6" />
+    <circle cx="12" cy="16.5" r="0.9" fill="currentColor" stroke="none" />
+  </IconBase>
+);
+
+const Hash = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M9 3l-2 18" />
+    <path d="M17 3l-2 18" />
+    <path d="M3.5 9h17" />
+    <path d="M2.5 15h17" />
+  </IconBase>
+);
+
+const CheckSquare = (props: IconProps) => (
+  <IconBase {...props}>
+    <rect x="3.5" y="3.5" width="17" height="17" rx="3" />
+    <path d="M7.5 12.5l3 3 6-6.5" />
+  </IconBase>
+);
+
+const HelpCircle = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M9.5 9a2.5 2.5 0 1 1 3.6 2.2c-.9.5-1.1.9-1.1 1.8" />
+    <circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none" />
+  </IconBase>
+);
+
+const MessageSquare = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M4 4h16v11H8l-4 4V4Z" />
+  </IconBase>
+);
+
+const Sparkles = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 3l1.4 3.9L17 8.5l-3.6 1.6L12 14l-1.4-3.9L7 8.5l3.6-1.6L12 3Z" fill="currentColor" stroke="none" />
+    <path d="M19 14l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2Z" fill="currentColor" stroke="none" />
+    <path d="M5 15l.6 1.6L7 17.2l-1.4.6L5 19.4l-.6-1.6L3 17.2l1.4-.6L5 15Z" fill="currentColor" stroke="none" />
+  </IconBase>
+);
+
+const Crown = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M4 18h16l1-9-5 3.5L12 6l-4 6.5L3 9l1 9Z" />
+    <path d="M4 21h16" />
+  </IconBase>
+);
+
+const Moon = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" />
+  </IconBase>
+);
+
+const Sun = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="4.5" />
+    <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6" />
+  </IconBase>
+);
+
+const Check = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M5 12.5l4.5 4.5L19 7" />
+  </IconBase>
+);
+
+const RefreshCcwIcon = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M3.5 12a8.5 8.5 0 0 1 14.4-6.1M20.5 12a8.5 8.5 0 0 1-14.4 6.1" />
+    <path d="M17.5 3v3.5H14" />
+    <path d="M6.5 21v-3.5H10" />
+  </IconBase>
+);
+
+/* =========================================================================
+   INDEXEDDB — store completed attempts locally so users can revisit them.
+   ========================================================================= */
+
+const TAKEN_DB_NAME = "hyperquizzes-db";
+const TAKEN_STORE_NAME = "taken_quizzes";
+const TAKEN_DB_VERSION = 1;
+
+interface TakenQuizRecord {
+  id: number;
+  quiz_name: string;
+  score: number;
+  passed: boolean;
+  correctAnswers: number;
+  totalQuestions: number;
+  timeTaken: number;
+  quizType: string;
+  dateTaken: number;
+}
+
+function openTakenQuizzesDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    if (typeof indexedDB === "undefined") {
+      reject(new Error("IndexedDB not available"));
+      return;
+    }
+    const request = indexedDB.open(TAKEN_DB_NAME, TAKEN_DB_VERSION);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(TAKEN_STORE_NAME)) {
+        const store = db.createObjectStore(TAKEN_STORE_NAME, { keyPath: "id" });
+        store.createIndex("dateTaken", "dateTaken");
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function saveTakenQuiz(record: TakenQuizRecord): Promise<void> {
+  try {
+    const db = await openTakenQuizzesDB();
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(TAKEN_STORE_NAME, "readwrite");
+      tx.objectStore(TAKEN_STORE_NAME).put(record);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (err) {
+    console.error("Failed to save taken quiz to IndexedDB:", err);
+  }
+}
+
+async function getAllTakenQuizzes(): Promise<TakenQuizRecord[]> {
+  try {
+    const db = await openTakenQuizzesDB();
+    return await new Promise((resolve, reject) => {
+      const tx = db.transaction(TAKEN_STORE_NAME, "readonly");
+      const req = tx.objectStore(TAKEN_STORE_NAME).getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    });
+  } catch (err) {
+    console.error("Failed to load taken quizzes from IndexedDB:", err);
+    return [];
+  }
+}
+
+/* ========================================================================= */
 
 interface Quiz_loaded {
   id: number;
@@ -105,8 +373,8 @@ const DarkModeToggle = ({ isDark, toggle }: { isDark: boolean; toggle: () => voi
 );
 
 
-const GlassCard = ({ children, className = "", isDark = true }: { children: React.ReactNode; className?: string; isDark?: boolean }) => (
-  <div className={`relative backdrop-blur-md border rounded-2xl overflow-hidden transition-all duration-300 ${
+const GlassCard = ({ children, className = "", isDark = true, onClick }: { children: React.ReactNode; className?: string; isDark?: boolean; onClick?: () => void }) => (
+  <div onClick={onClick} className={`relative backdrop-blur-md border rounded-2xl overflow-hidden transition-all duration-300 ${
     isDark 
       ? 'bg-slate-900/60 border-slate-800 hover:border-slate-700' 
       : 'bg-white/80 border-slate-200 hover:border-orange-300'
@@ -170,6 +438,22 @@ export default function JoinQuiz() {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [exploreQuery, setExploreQuery] = useState("");
 
+  // Likes — kept as local state so the UI actually re-renders on click
+  const [likedQuizzes, setLikedQuizzes] = useState<number[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const parsed = JSON.parse(localStorage.getItem("liked") as string);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  const [likeBurst, setLikeBurst] = useState(false);
+
+  // Previously taken quizzes, loaded from IndexedDB
+  const [takenQuizzes, setTakenQuizzes] = useState<TakenQuizRecord[]>([]);
+  const [takenQuizzesLoading, setTakenQuizzesLoading] = useState(true);
+
 
   const quiz_id = searchParams.get("id");
 
@@ -203,38 +487,22 @@ export default function JoinQuiz() {
   }
 
 
-  const is_liked = (id: any) => {
-  const likes = localStorage.getItem("liked");
-  let liked_data: any[] = [];
+  const is_liked = (id: any) => likedQuizzes.includes(Number(id));
 
-  try {
-    liked_data = JSON.parse(likes as string);
-    if (!Array.isArray(liked_data)) liked_data = [];
-  } catch {
-    liked_data = [];
-  }
+  const handleLike = (id: any) => {
+    if (is_liked(id)) return;
 
-  return liked_data.some((ld: any) => ld == id);
-};
+    const updated = [...likedQuizzes, Number(id)];
+    setLikedQuizzes(updated);
+    localStorage.setItem("liked", JSON.stringify(updated));
+    like_quiz(Number(id));
 
-const like_quiz_data = (id: any) => {
-  if (is_liked(id)) return;
+    // optimistic bump of the visible like count
+    setQuiz((prev: any) => (prev ? { ...prev, likes: (prev.likes || 0) + 1 } : prev));
 
-  const likes = localStorage.getItem("liked");
-  let liked_data: any[] = [];
-
-  try {
-    liked_data = JSON.parse(likes as string);
-    if (!Array.isArray(liked_data)) liked_data = [];
-  } catch {
-    liked_data = [];
-  }
-
-  liked_data.push(id);
-  localStorage.setItem("liked", JSON.stringify(liked_data));
-
-  like_quiz(Number(id)); 
-};
+    setLikeBurst(true);
+    setTimeout(() => setLikeBurst(false), 550);
+  };
 
 console.log(quiz)
     useEffect(() => {
@@ -259,6 +527,13 @@ console.log(quiz)
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', isDark);
   }, [isDark]);
+
+  // Load quiz-taking history from IndexedDB once on mount
+  useEffect(() => {
+    getAllTakenQuizzes()
+      .then((data) => setTakenQuizzes(data.sort((a, b) => b.dateTaken - a.dateTaken)))
+      .finally(() => setTakenQuizzesLoading(false));
+  }, []);
 
 
 
@@ -421,6 +696,23 @@ console.log(quiz)
     // Show results immediately (optimistic UI)
     setQuizResult({ score, correctAnswers: correctCount, totalQuestions: quiz.questions.length, timeTaken, passed });
     setStage(3);
+
+    // Persist this attempt locally so the user can revisit it from the home screen
+    saveTakenQuiz({
+      id: Number(quiz_id),
+      quiz_name: quiz.quiz_name,
+      score,
+      passed,
+      correctAnswers: correctCount,
+      totalQuestions: quiz.questions.length,
+      timeTaken,
+      quizType: quiz._type,
+      dateTaken: Date.now(),
+    }).then(() => {
+      getAllTakenQuizzes().then((data) =>
+        setTakenQuizzes(data.sort((a, b) => b.dateTaken - a.dateTaken))
+      );
+    });
 
     // Submit in background and show a tiny "Submitting" popup
     setIsSubmitting(true);
@@ -643,15 +935,7 @@ console.log(quiz)
                   onClick={toggleTheme}
                   className={`p-2.5 rounded-xl transition-all duration-300 hover:scale-110 border ${isDark ? 'bg-gray-900 text-orange-400 border-orange-500/30 hover:border-orange-500/50' : 'bg-slate-100 text-slate-600 border-slate-200 hover:border-orange-300'}`}
                 >
-                  {isDark ? (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                    </svg>
-                  )}
+                  {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </button>
 
                 <div className="relative" ref={profileRef}>
@@ -662,9 +946,7 @@ console.log(quiz)
                     <div className="w-8 h-8 rounded-full bg-linear-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-orange-500/30">
                       {avatarLetter}
                     </div>
-                    <svg className={`w-4 h-4 transition-transform duration-300 ${isDark ? 'text-gray-400' : 'text-slate-500'} ${profileOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+                    <ChevronLeft className={`w-4 h-4 -rotate-90 transition-transform duration-300 ${isDark ? 'text-gray-400' : 'text-slate-500'} ${profileOpen ? 'rotate-90' : ''}`} />
                   </button>
 
                   <div className={`absolute right-0 mt-2 w-72 rounded-2xl shadow-2xl border transition-all duration-300 transform origin-top-right ${profileOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'} ${isDark ? 'bg-black/95 border-orange-500/20 backdrop-blur-xl' : 'bg-white border-orange-100'}`}>
@@ -714,15 +996,7 @@ console.log(quiz)
                 onClick={toggleTheme}
                 className={`p-2 rounded-lg transition-colors duration-300 border ${isDark ? 'bg-gray-900 text-orange-400 border-orange-500/30' : 'bg-slate-100 text-slate-600 border-slate-200'}`}
               >
-                {isDark ? (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                  </svg>
-                ) : (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                  </svg>
-                )}
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
               
               <button
@@ -843,14 +1117,56 @@ console.log(quiz)
                 <p className={`text-xs mb-3 line-clamp-2 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                   Test your knowledge of core concepts
                 </p>
-                
-                {/* <div className={`flex items-center gap-4 text-xs ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
-                  <span className="flex items-center gap-1"><Users className="w-3 h-3" /> 1.2k</span>
-                  <span className="flex items-center gap-1"><Target className="w-3 h-3" /> 10</span>
-                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> 5m</span>
-                </div> */}
               </GlassCard>
            </div>
+
+          {/* Previously taken quizzes — pulled from IndexedDB so it works fully offline */}
+          {!takenQuizzesLoading && takenQuizzes.length > 0 && (
+            <div className="mt-8">
+              <div className="flex items-center gap-2 mb-3">
+                <Clock className={`w-4 h-4 ${isDark ? 'text-orange-400' : 'text-orange-600'}`} />
+                <h2 className="text-sm font-semibold">Quizzes You've Taken</h2>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isDark ? 'bg-slate-800 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>
+                  saved on this device
+                </span>
+              </div>
+              <div className="space-y-2">
+                {takenQuizzes.map((tq) => (
+                  <GlassCard
+                    key={`${tq.id}-${tq.dateTaken}`}
+                    className="p-3 cursor-pointer hover:scale-[1.01] transition-transform"
+                    isDark={isDark}
+                    onClick={() => navigate(`?id=${tq.id}`)}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${tq.passed ? (isDark ? 'bg-emerald-500/10' : 'bg-emerald-100') : (isDark ? 'bg-rose-500/10' : 'bg-rose-100')}`}>
+                          {tq.passed ? (
+                            <Crown className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
+                          ) : (
+                            <XCircle className={`w-4 h-4 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium truncate">{tq.quiz_name}</p>
+                          <p className={`text-[11px] ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
+                            {new Date(tq.dateTaken).toLocaleDateString()} · {tq.quizType}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <div className="text-right">
+                          <div className={`text-sm font-bold ${tq.passed ? 'text-emerald-500' : 'text-rose-500'}`}>{tq.score}%</div>
+                          <div className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>{tq.passed ? 'Passed' : 'Failed'}</div>
+                        </div>
+                        <ChevronRight className={`w-4 h-4 ${isDark ? 'text-slate-600' : 'text-slate-400'}`} />
+                      </div>
+                    </div>
+                  </GlassCard>
+                ))}
+              </div>
+            </div>
+          )}
          
         </div>
       </div>
@@ -875,6 +1191,7 @@ console.log(quiz)
   
   if (stage === 1) {
     const successRate = quiz.completed > 0 ? Math.round((quiz.passed / quiz.completed) * 100) : 0;
+    const liked = is_liked(quiz_id);
     
     return (
       <div className={`min-h-screen relative ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
@@ -911,7 +1228,23 @@ console.log(quiz)
             </div>
             
             <h1 className="text-2xl font-bold mb-2">{quiz.quiz_name}</h1>
-            <p className={`text-sm mb-4 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{quiz.material}</p>
+            <p className={`text-sm mb-3 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{quiz.material}</p>
+
+            {quiz.quiz_tags && quiz.quiz_tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {quiz.quiz_tags.map((tag: string, idx: number) => (
+                  <span
+                    key={idx}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium ${
+                      isDark ? 'bg-orange-500/10 text-orange-300 border border-orange-500/20' : 'bg-orange-50 text-orange-700 border border-orange-200'
+                    }`}
+                  >
+                    <Hash className="w-2.5 h-2.5" />
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
             
             <div className="flex items-center gap-3 text-xs">
               <span onClick={()=> window.location.href = `/playerinfo?id=${quiz.creator_id}`} className={`cursor-pointer px-2.5 py-1 rounded-md ${isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-700'}`}>
@@ -920,8 +1253,9 @@ console.log(quiz)
               <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>
                 {new Date(Number(quiz.time_posted)).toLocaleDateString()}
               </span>
-                  <span className={isDark ? 'text-white flex gap-1' : 'text-slate-500 flex gap-1'}>
-               <Heart size={12} className="my-auto" /> { quiz.likes} likes
+              <span className={`flex items-center gap-1 ${isDark ? 'text-white' : 'text-slate-500'}`}>
+                <Heart className={`w-3 h-3 ${liked ? 'text-rose-500' : ''}`} fill={liked ? 'currentColor' : 'none'} />
+                {quiz.likes} likes
               </span>
             </div>
           </GlassCard>
@@ -974,17 +1308,49 @@ console.log(quiz)
               <Play className="w-4 h-4 mr-2" />
               Start
             </Button>
-           <Button
-  onClick={() => like_quiz_data(quiz_id)}
-  variant="secondary"
-  className="w-12 shrink-0"
-  isDark={isDark}
->
-  <Heart
-    className="w-4 h-4"
-    fill={is_liked(quiz_id) ? "red" : "gray"}  // ← fixed: red when liked
-  />
-</Button>
+
+            <button
+              onClick={() => handleLike(quiz_id)}
+              disabled={liked}
+              aria-label={liked ? "Already liked" : "Like this quiz"}
+              className={`relative w-12 shrink-0 rounded-xl border transition-all duration-200 flex items-center justify-center overflow-visible ${
+                liked
+                  ? "border-rose-500/60 bg-rose-500/10 cursor-default"
+                  : isDark
+                    ? "bg-slate-800 border-slate-700 hover:border-rose-500/40 hover:bg-rose-500/5 cursor-pointer active:scale-90"
+                    : "bg-white border-slate-200 hover:border-rose-300 hover:bg-rose-50 cursor-pointer active:scale-90"
+              }`}
+            >
+              <motion.div
+                animate={likeBurst ? { scale: [1, 1.5, 0.85, 1.15, 1] } : { scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Heart
+                  className={`w-4 h-4 ${liked ? 'text-rose-500' : isDark ? 'text-slate-400' : 'text-slate-500'}`}
+                  fill={liked ? 'currentColor' : 'none'}
+                />
+              </motion.div>
+              <AnimatePresence>
+                {likeBurst && (
+                  <>
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <motion.span
+                        key={i}
+                        initial={{ opacity: 1, x: 0, y: 0, scale: 0 }}
+                        animate={{
+                          opacity: 0,
+                          x: Math.cos((i / 6) * Math.PI * 2) * 18,
+                          y: Math.sin((i / 6) * Math.PI * 2) * 18,
+                          scale: 1,
+                        }}
+                        transition={{ duration: 0.5 }}
+                        className="absolute w-1 h-1 rounded-full bg-rose-500 pointer-events-none"
+                      />
+                    ))}
+                  </>
+                )}
+              </AnimatePresence>
+            </button>
 
             <Button variant="secondary" className="w-12 shrink-0" isDark={isDark}>
               <Share2 className="w-4 h-4" />
