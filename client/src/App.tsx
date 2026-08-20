@@ -43,26 +43,60 @@ function PageLoader() {
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
-  return (
-    <div className={`fixed inset-0 z-9999 flex flex-col items-center justify-center transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
-      <div className="w-12 h-12 bg-orange-500 rounded-xl animate-pulse mb-4" >
-         <img src={logo} alt="logo" />
-      </div>
-      <div className={`w-48 h-1 rounded-full overflow-hidden ${isDark ? 'bg-slate-800' : 'bg-gray-200'}`}>
-        <div className="h-full bg-orange-500 animate-[loading_1s_ease-in-out_infinite]" 
-          style={{ width: '60%' }} />
-      </div>
-      <p className={`mt-4 text-sm animate-pulse ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-        Loading...
-      </p>
-      <style>{`
-        @keyframes loading {
-          0%, 100% { transform: translateX(-100%); }
-          50% { transform: translateX(66%); }
-        }
-      `}</style>
+return (
+  <div
+    className={`fixed inset-0 z-50 flex flex-col items-center justify-center transition-colors duration-300 ${
+      isDark ? 'bg-slate-950' : 'bg-white'
+    }`}
+  >
+    {/* Logo — clean, no background color */}
+    <div className="mb-8">
+      <img
+        src={logo}
+        alt="Hyper Quizzes"
+        className="h-12 w-auto object-contain"
+      />
     </div>
-  );
+
+    {/* Minimal dot pulse loader */}
+    <div className="flex items-center gap-2">
+      <span
+        className={`h-2 w-2 rounded-full ${
+          isDark ? 'bg-slate-400' : 'bg-gray-400'
+        } animate-[bounce_1.4s_infinite_ease-in-out]`}
+        style={{ animationDelay: '0s' }}
+      />
+      <span
+        className={`h-2 w-2 rounded-full ${
+          isDark ? 'bg-slate-400' : 'bg-gray-400'
+        } animate-[bounce_1.4s_infinite_ease-in-out]`}
+        style={{ animationDelay: '0.2s' }}
+      />
+      <span
+        className={`h-2 w-2 rounded-full ${
+          isDark ? 'bg-slate-400' : 'bg-gray-400'
+        } animate-[bounce_1.4s_infinite_ease-in-out]`}
+        style={{ animationDelay: '0.4s' }}
+      />
+    </div>
+
+    {/* Optional subtle text */}
+    <p
+      className={`mt-6 text-sm font-medium tracking-wide ${
+        isDark ? 'text-slate-500' : 'text-gray-400'
+      }`}
+    >
+      Loading
+    </p>
+
+    <style>{`
+      @keyframes bounce {
+        0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+        40% { transform: scale(1); opacity: 1; }
+      }
+    `}</style>
+  </div>
+);
 }
 
 // Route wrapper with loading state
