@@ -1252,6 +1252,25 @@ console.log(quiz)
               <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>
                 {new Date(Number(quiz.time_posted)).toLocaleDateString()}
               </span>
+              {/* <span className={`flex items-center gap-1 ${isDark ? 'text-white' : 'text-slate-500'}`}>
+                <Heart className={`w-3 h-3 ${liked ? 'text-rose-500' : ''}`} fill={liked ? 'currentColor' : 'none'} />
+                {quiz.likes} likes
+              </span>
+
+                <span className={`flex items-center gap-1 ${isDark ? 'text-white' : 'text-slate-500'}`}>
+                <Users className={`w-3 h-3 `} />
+                {quiz.completed || 0}  played 
+              </span> */}
+
+            </div>
+
+             <div className="flex items-center gap-3 text-xs">
+              {/* <span onClick={()=> window.location.href = `/playerinfo?id=${quiz.creator_id}`} className={`cursor-pointer px-2.5 py-1 rounded-md ${isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-700'}`}>
+                @{creatorName || "User0" + quiz.creator_id}
+              </span>
+              <span className={isDark ? 'text-slate-500' : 'text-slate-500'}>
+                {new Date(Number(quiz.time_posted)).toLocaleDateString()}
+              </span> */}
               <span className={`flex items-center gap-1 ${isDark ? 'text-white' : 'text-slate-500'}`}>
                 <Heart className={`w-3 h-3 ${liked ? 'text-rose-500' : ''}`} fill={liked ? 'currentColor' : 'none'} />
                 {quiz.likes} likes
@@ -1259,7 +1278,7 @@ console.log(quiz)
 
                 <span className={`flex items-center gap-1 ${isDark ? 'text-white' : 'text-slate-500'}`}>
                 <Users className={`w-3 h-3 `} />
-                {quiz.completed} played 
+                {quiz.completed || 0}  played 
               </span>
 
             </div>
